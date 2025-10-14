@@ -1,0 +1,9 @@
+services:
+  macrobot:
+    build: .
+    env_file:
+      - .env
+    container_name: macrobot_prod
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:60010:60010"

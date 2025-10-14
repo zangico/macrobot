@@ -24,7 +24,7 @@ Append `/battery` to the url and save body to a local variable
 ### Action
 **HTTP Request**\
 1. Create a `POST`request. Put the url with https://MACROBOT_HOST/send_battery
-2. Set `{"webhook_req": {lv=variable_name}}, "battery" : {battery}}` where `variable_name` is the name of the local variable you saved in the webhook trigger
+2. Set `{"webhook_req": {lv=variable_name}, "battery" : {battery}}` where `variable_name` is the name of the local variable you saved in the webhook trigger
 
 ## .env
 - `TELEGRAM__BOT_TOKEN`: the Telegram token provided by BotFather.

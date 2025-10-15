@@ -27,7 +27,7 @@ class TelegramBot:
     def sort_message(self, chat_id, text: str):
         if text.startswith("/"):
             command = text[1:].split(" ")[0]
-            return commands.sort_commands(chat_id, command)
+            return commands.sort_commands(self, chat_id, command)
 
     def send_message(self, chat_id, text):
         url = f"https://api.telegram.org/bot{self.token}/sendMessage"

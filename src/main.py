@@ -101,6 +101,7 @@ async def telegram_webhook(request: Request):
     logger.info(f"parsing wehbook {data}")
 
     message = data.get("message") or data.get("edited_message")
+    chat_id = message.get("chat", {}).get("id")
     if not message:
         return JSONResponse({"ok": False, "error": "no message"})
 
@@ -110,10 +111,10 @@ async def telegram_webhook(request: Request):
         return JSONResponse({"ok": True})
 
     try:
-        command_to_forward = await bot.sort_message(text)
+        command_to_forward = await bot.sort_message(chat_id, text)
 
         if command_to_forward:
-            await forward_command(command_to_forward)
+            await forward_command(chat_id, command_to_forward)
 
     except Exception as e:
         logger.exception(e)

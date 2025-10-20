@@ -1,0 +1,63 @@
+@PORT=your_port_from_dotenv
+
+@AUTH_USERNAME=user_from_htpasswd
+@AUTH_PASSWORD=password
+
+@EXTERNAL_DOMAIN=your_ip_or_domain
+@TELEGRAM_SECRET=your_telegram_secret_from_dotenv
+
+@CHAT_ID=from_telegram
+
+
+### Local tests
+
+### SMS forward
+POST http://localhost:{{PORT}}/sms?number=%2B1234567890&chat_id={{CHAT_ID}}
+Content-Type: text/plain
+
+Text with line breaks
+double quotes ", emooji 😙 and a slash \
+
+### Missed call forward (or any other text)
+POST http://localhost:{{PORT}}/reply_from_macrodroid
+Content-Type: application/json
+
+{
+    "chat_id": {{CHAT_ID}},
+    "text": "Missed call from +1234567890"
+}
+
+### Telegram Webhook
+POST http://localhost:{{PORT}}/telegram_webhook?secret={{TELEGRAM_SECRET}}
+Content-Type: application/json
+
+{
+  "message": {
+    "chat": {"id": {{CHAT_ID}}},
+    "text": "/start"
+  }
+}
+
+
+### Global tests
+
+### SMS forward
+POST https://{{EXTERNAL_DOMAIN}}/sms?number=%2B1234567890
+Authorization: Basic {{AUTH_USERNAME}}:{{AUTH_PASSWORD}}
+Content-Type: text/plain
+
+Text with line breaks
+double quotes ", emooji 😙 and a slash \
+
+### Telegram Webhook
+POST https://{{EXTERNAL_DOMAIN}}/telegram_webhook?secret={{TELEGRAM_SECRET}}
+Content-Type: application/json
+
+{
+  "message": {
+    "chat": {"id": {{CHAT_ID}}},
+    "text": "/start"
+  }
+}
+
+

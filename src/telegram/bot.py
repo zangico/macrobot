@@ -1,4 +1,4 @@
-import requests
+import httpx
 
 from nucleo import logger
 
@@ -12,28 +12,37 @@ class TelegramBot:
         self.secret = secret
         self.host = host
 
-    def set_webhook(self):
+    async def set_webhook(self):
         url = f"https://{self.host}/telegram_webhook?secret={self.secret}"
         api_url = f"https://api.telegram.org/bot{self.token}/setWebhook"
         try:
-            response = requests.post(api_url, data={"url": url}, timeout=10)
-            logger.info(f"Webhook set: {response.json()}")
+            async with httpx.AsyncClient(timeout=10) as client:
+                response = await client.post(api_url, json={"url": url})
+                data = response.json()
+                if (
+                    data.get("ok")
+                    and data.get("description") == "Webhook is already set"
+                ):
+                    logger.debug(f"Webhook set: {data}")
+                else:
+                    logger.info(f"Webhook set: {data}")
         except Exception as e:
             logger.error(f"Error setting webhook: {e}")
 
     def is_secret_valid(self, secret):
         return secret == self.secret
 
-    def sort_message(self, chat_id, text: str):
+    async def sort_message(self, chat_id, text: str):
         if text.startswith("/"):
             command = text[1:].split(" ")[0]
-            return commands.sort_commands(self, chat_id, command)
+            return await commands.sort_commands(self, chat_id, command)
 
-    def send_message(self, chat_id, text):
+    async def send_message(self, chat_id, text):
         url = f"https://api.telegram.org/bot{self.token}/sendMessage"
         payload = {"chat_id": chat_id, "text": text}
         try:
-            resp = requests.post(url, json=payload, timeout=10)
-            resp.raise_for_status()
+            async with httpx.AsyncClient(timeout=10) as client:
+                resp = await client.post(url, json=payload)
+                resp.raise_for_status()
         except Exception as e:
             logger.error(f"Failed to send telegram message: {e}")

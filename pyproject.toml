@@ -1,0 +1,44 @@
+[tool.poetry]
+name = "macrobot"
+version = "0.1.0"
+description = "A Telegram bot for Macrodroid integration"
+authors = ["zangico <zangico@gmail.com>"]
+readme = "README.md"
+packages = [
+  { include = "nucleo", from = "src" },
+  { include = "telegram", from = "src" }
+]
+
+
+[tool.poetry.dependencies]
+python = "3.12.12"
+concurrent-log-handler = "0.9.28"
+fastapi = "0.119.0"
+gunicorn = "23.0.0"
+httpx = "0.28.1"
+pydantic-core = "2.41.1"
+pydantic-settings = "2.11.0"
+python-json-logger = "4.0.0"
+uvicorn = "0.37.0"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.14"
+black = "^25.9"
+pytest = "^8.0"
+pytest-asyncio = "^0.24"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+
+[tool.ruff]
+line-length = 88
+lint.select = ["E", "F", "B", "I"]
+lint.ignore = ["B008"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

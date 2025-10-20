@@ -1,14 +1,19 @@
+import asyncio
 import logging
-import os
 
 from nucleo import settings
 from telegram.bot import TelegramBot
 
-workers = int(os.getenv("GUNICORN_WORKERS", 4))
+host = settings.API.HOST
+port = settings.API.PORT
+
+### GUNICORN CONFIGURATION
+bind = f"{host}:{port}"
+workers = settings.API.WORKERS
 worker_class = "uvicorn.workers.UvicornWorker"
-bind = "0.0.0.0:60010"
+keepalive = 5
 timeout = 30
-loglevel = "info"
+loglevel = "debug" if settings.APP.DEBUG else "info"
 
 
 class SuppressWinchFilter(logging.Filter):
@@ -25,11 +30,17 @@ logconfig_dict = {
     "disable_existing_loggers": False,
     "formatters": {
         "generic": {
-            "format": "[%(asctime)s,%(msecs)03d][%(process)d][%(levelname)s][gc:control] %(message)s",
+            "format": (
+                "[%(asctime)s,%(msecs)03d][%(process)d][%(levelname)s][gc:control] "
+                "%(message)s"
+            ),
             "datefmt": "%Y-%m-%d %H:%M:%S",
         },
         "access": {
-            "format": "[%(asctime)s,%(msecs)03d][%(process)d][%(levelname)s][gc:api] %(message)s",
+            "format": (
+                "[%(asctime)s,%(msecs)03d][%(process)d][%(levelname)s][gc:api] "
+                "%(message)s"
+            ),
             "datefmt": "%Y-%m-%d %H:%M:%S",
         },
     },
@@ -86,6 +97,10 @@ logconfig_dict = {
 
 
 def on_starting(server):
+
+    async def startup():
+        await bot.set_webhook()
+
     TOKEN = settings.TELEGRAM.BOT_TOKEN
     SECRET = settings.TELEGRAM.WEBHOOK_SECRET
     HOST = settings.TELEGRAM.MACROBOT_HOST
@@ -98,7 +113,7 @@ def on_starting(server):
 
     bot = TelegramBot(TOKEN, SECRET, HOST)
     try:
-        bot.set_webhook()
+        asyncio.run(startup())
         server.log.info("Telegram webhook registered by master process.")
     except Exception as e:
         server.log.error(f"Error registering Telegram webhook: {e}")

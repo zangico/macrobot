@@ -1,11 +1,11 @@
 
 
-def start(bot, chat_id: int):
-    bot.send_message(chat_id, "Benvenuto in MacroBot")
+async def start(bot, chat_id: int):
+    await bot.send_message(chat_id, "Welcome to MacroBot")
 
 
-def sort_commands(bot, chat_id: int, command: str):
+async def sort_commands(bot, chat_id: int, command: str):
     if command == "start":
-        return start(bot, chat_id)
+        return await start(bot, chat_id)
     
     return command

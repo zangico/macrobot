@@ -1,0 +1,146 @@
+{
+  "globalVariables": [
+    {
+      "description": "",
+      "dictionary": {
+        "entries": [],
+        "isArray": false,
+        "variableType": 4,
+        "type": "Dictionary"
+      },
+      "isActionBlockWorkingVar": true,
+      "isLocalVar": false,
+      "isSecure": false,
+      "m_booleanValue": false,
+      "m_decimalValue": 0,
+      "m_intValue": 0,
+      "m_name": "chat_id",
+      "m_stringValue": "",
+      "m_type": 1,
+      "supportsInput": false,
+      "supportsOutput": true
+    }
+  ],
+  "macro": {
+    "disabledTimestamp": 0,
+    "exportedActionBlocks": [],
+    "forceEvenIfNotEnabledTimestamp": 0,
+    "isActionBlock": false,
+    "isExtra": false,
+    "isFavourite": false,
+    "lastEditedTimestamp": 1760973423453,
+    "localVariables": [
+      {
+        "dictionary": {
+          "entries": [],
+          "isArray": false,
+          "variableType": 4,
+          "type": "Dictionary"
+        },
+        "isActionBlockWorkingVar": false,
+        "isLocalVar": true,
+        "isSecure": false,
+        "m_booleanValue": false,
+        "m_decimalValue": 0,
+        "m_intValue": 0,
+        "m_name": "body_resp",
+        "m_stringValue": "{\"detail\":\"SMS forwarded\"}",
+        "m_type": 2,
+        "supportsInput": false,
+        "supportsOutput": true
+      }
+    ],
+    "localVarsAlphabetical": true,
+    "m_GUID": -5616011368206628000,
+    "m_actionList": [
+      {
+        "requestConfig": {
+          "allowAnyCertificate": false,
+          "basicAuthEnabled": true,
+          "basicAuthPassword": "your_htpasswd_password",
+          "basicAuthUsername": "your_htpasswd_username",
+          "blockNextAction": false,
+          "clientCertEnabled": false,
+          "clientCertKeyStoreDisplayName": "",
+          "clientCertKeyStoreUri": "",
+          "clientCertPassword": "",
+          "contentBodyDynamicFileName": "",
+          "contentBodyFileDisplayName": "",
+          "contentBodyFileUri": "",
+          "contentBodyFolderDisplayName": "",
+          "contentBodyFolderUri": "",
+          "contentBodySource": 0,
+          "contentBodyText": "{sms_message}",
+          "contentType": "text/plain",
+          "followRedirects": true,
+          "headerParams": [],
+          "localFileUri": "",
+          "prettifyJson": false,
+          "queryParams": [
+            {
+              "paramName": "number",
+              "paramValue": "{sms_name}"
+            },
+            {
+              "paramName": "chat_id",
+              "paramValue": "{v=chat_id}"
+            }
+          ],
+          "requestTimeOutSeconds": 10,
+          "requestType": 1,
+          "responseVariableName": "",
+          "returnCodeVariableName": "",
+          "returnHeadersVariableName": "",
+          "saveResponseFileName": "",
+          "saveResponseFolderPathDisplayName": "",
+          "saveResponseFolderPathUri": "",
+          "saveResponseType": 0,
+          "saveReturnCodeToVariable": false,
+          "saveReturnHeadersToVariable": false,
+          "urlToOpen": "https://your_ip_or_domain/sms",
+          "useLocalFileUri": false,
+          "useStaticContentBodyFile": true
+        },
+        "disableLogging": false,
+        "m_SIGUID": -9063453694062125000,
+        "m_classType": "HttpRequestAction",
+        "m_constraintList": [],
+        "m_isDisabled": false,
+        "m_isOrCondition": false
+      }
+    ],
+    "m_category": "Uncategorized",
+    "m_constraintList": [],
+    "m_description": "",
+    "m_descriptionOpen": false,
+    "m_enabled": true,
+    "m_excludeLog": false,
+    "m_headingColor": 0,
+    "m_isOrCondition": false,
+    "m_name": "Forward SMS Example",
+    "m_triggerList": [
+      {
+        "enableRegex": false,
+        "enableRegexPhoneNumber": false,
+        "ignoreCase": true,
+        "isExcludeContact": false,
+        "m_exactMatch": false,
+        "m_excludes": false,
+        "m_groupIdList": [],
+        "m_groupNameList": [],
+        "m_option": 3,
+        "m_smsContent": "",
+        "m_smsFromList": [],
+        "m_smsNumberExclude": false,
+        "subscriptionId": -1,
+        "disableLogging": false,
+        "m_SIGUID": -8706904656382338000,
+        "m_classType": "IncomingSMSTrigger",
+        "m_constraintList": [],
+        "m_isDisabled": false,
+        "m_isOrCondition": false
+      }
+    ]
+  },
+  "macroExportVersion": 1
+}

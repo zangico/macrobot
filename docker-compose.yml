@@ -1,5 +1,5 @@
 services:
-  orbitapp:
+  bot:
     build: .
     env_file:
       - .env

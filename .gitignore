@@ -1,6 +1,6 @@
 __pycache__
-
 .env
 logs
+requirements.txt
 
 *.http

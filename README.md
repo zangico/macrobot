@@ -61,8 +61,8 @@ sudo certbot --nginx -d MACROBOT_HOST
   - Endpoint called by Telegram. The `secret` query parameter must match `TELEGRAM__WEBHOOK_SECRET`.
 - `POST /reply_from_macrodroid`
   - Sends a message to a Telegram user (JSON payload: `{ "chat_id": int, "text": str }`). Useful to forward events from MacroDroid, e.g. missed calls.
-- `POST /sms?number=+123456...` body: text/plain
-  - Forwards a received SMS to the `ADMIN_CHAT_ID` on Telegram.
+- `POST /sms?chat_id=TELEGRAM_CHAT_ID&number=+123456...` body: text/plain with the message
+  - Forwards a received SMS to the `TELEGRAM_CHAT_ID` on Telegram.
 
 For ready-to-use examples, see `test/test.http.dist` (compatible with the VS Code REST Client extension). Copy it to `test.http`, set the variables at the top, and try the requests.
 

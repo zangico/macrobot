@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 
 from nucleo import logger, settings
 from telegram import TelegramBot
+from utils.retry import retry
 
 app = FastAPI()
 
@@ -47,14 +48,21 @@ async def send_battery(request: Request):
     return JSONResponse({"ok": True})
 
 
+@retry
+async def call_macrodroid_webhook(webhook_url: str, chat_id: int, command: str):
+    """Send request to MacroDroid webhook with retry logic."""
+    logger.debug(f"Calling {webhook_url=}")
+    macrodroid_request = {"chat_id": chat_id, "request": command}
+    async with httpx.AsyncClient(timeout=5) as client:
+        response = await client.post(webhook_url, json=macrodroid_request)
+        response.raise_for_status()
+
+
 async def forward_command(chat_id, command):
     webhook_url = settings.MACRODROID_WEBHOOK
     try:
         logger.debug(f"Forwarding {command=} to {chat_id=}")
-        logger.debug(f"Calling {webhook_url=}")
-        macrodroid_request = {"chat_id": chat_id, "request": command}
-        async with httpx.AsyncClient(timeout=5) as client:
-            await client.post(webhook_url, json=macrodroid_request)
+        await call_macrodroid_webhook(webhook_url, chat_id, command)
     except Exception as e:
         logger.error(f"Failed to call macrodroid webhook: {e}")
         await bot.send_message(chat_id, "Errore chiamando il dispositivo (webhook).")

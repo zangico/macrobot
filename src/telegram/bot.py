@@ -1,6 +1,7 @@
 import httpx
 
 from nucleo import logger
+from utils.retry import retry
 
 from . import commands
 
@@ -37,12 +38,12 @@ class TelegramBot:
             command = text[1:].split(" ")[0]
             return await commands.sort_commands(self, chat_id, command)
 
+    @retry(max_attempts=10, delay=1.0, backoff=2.0)
     async def send_message(self, chat_id, text):
         url = f"https://api.telegram.org/bot{self.token}/sendMessage"
         payload = {"chat_id": chat_id, "text": text}
-        try:
-            async with httpx.AsyncClient(timeout=10) as client:
-                resp = await client.post(url, json=payload)
-                resp.raise_for_status()
-        except Exception as e:
-            logger.error(f"Failed to send telegram message: {e}")
+        
+        async with httpx.AsyncClient(timeout=10) as client:
+            resp = await client.post(url, json=payload)
+            resp.raise_for_status()
+
